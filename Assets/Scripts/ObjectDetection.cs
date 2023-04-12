@@ -141,7 +141,7 @@ public class ObjectDetection : MonoBehaviour
 
     #endregion
 
-    
+    /*
     IEnumerator PlayVideoFromServer(string url)
     {
         UnityWebRequest videoRequest = UnityWebRequest.Get(url);
