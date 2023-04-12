@@ -161,9 +161,6 @@ public class ObjectDetection : MonoBehaviour
     }
 
     test
-
-    tttttttt
-    asdadas
     //*/
 
     void Start()
