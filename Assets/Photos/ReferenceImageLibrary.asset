@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 848409ee8ba454f42a5ddff137688a27, type: 3}
+  m_Name: ReferenceImageLibrary
+  m_EditorClassIdentifier: 
+  m_GuidLow: 5543852335222146098
+  m_GuidHigh: 1634025280640749997
+  m_DataStore:
+    m_Storage: []
+  m_Images:
+  - m_SerializedGuid:
+      m_GuidLow: 5616964243063829206
+      m_GuidHigh: 15211224204284569271
+    m_SerializedTextureGuid:
+      m_GuidLow: 4257205216438554599
+      m_GuidHigh: 12990850450669961386
+    m_Size: {x: 0.3, y: 0.3}
+    m_SpecifySize: 1
+    m_Name: Turbine
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5341017152888623972
+      m_GuidHigh: 2692185802318912170
+    m_SerializedTextureGuid:
+      m_GuidLow: 12503287267224947348
+      m_GuidHigh: 6109361061970949176
+    m_Size: {x: 0.3, y: 0.3}
+    m_SpecifySize: 1
+    m_Name: Heater
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5684444283006952690
+      m_GuidHigh: 18183974499983163536
+    m_SerializedTextureGuid:
+      m_GuidLow: 2000776209958505724
+      m_GuidHigh: 13471246134778802411
+    m_Size: {x: 0.3, y: 0.3}
+    m_SpecifySize: 1
+    m_Name: Pliers
+    m_Texture: {fileID: 0}
