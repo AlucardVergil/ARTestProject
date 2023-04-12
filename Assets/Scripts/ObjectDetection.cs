@@ -133,11 +133,11 @@ public class ObjectDetection : MonoBehaviour
     [Header("The raw image that the video frames will display on and the \nvideo player component (These are for testing with video and \nto be removed later)")]
     public RawImage display; //I didn't place this inside the #if UNITY_EDITOR because i need this to destroy the gameobject on build
 
-//#if UNITY_EDITOR
+#if UNITY_EDITOR
     public VideoPlayer videoPlayer;
     private Texture2D arVideoTexture;    
     private Texture frame; //Texture frame only for testing video
-//#endif//*/
+#endif//*/
 
     #endregion
 
@@ -182,22 +182,22 @@ public class ObjectDetection : MonoBehaviour
         screenHeight = canvas.GetComponent<RectTransform>().rect.height; //Screen.height; 
 
         #region Video For Testing Only (To Remove Later)
-        /*
-        //#if UNITY_EDITOR
+        
+        #if UNITY_EDITOR
         videoPlayer.Prepare();
         videoPlayer.prepareCompleted += OnVideoPrepared;
-//#endif
+#endif
 
-//#if !UNITY_EDITOR
+#if !UNITY_EDITOR
         //Destroy(display.gameObject);  
-//#endif
+#endif
         //*/
         #endregion
     }
 
     #region Video For Testing Only (To Remove Later)
-    /*
-//#if UNITY_EDITOR
+    
+#if UNITY_EDITOR
     private void OnVideoPrepared(VideoPlayer vp)
     {
         vp.Play();
@@ -252,7 +252,7 @@ public class ObjectDetection : MonoBehaviour
         }
 
     }
-//#endif//*/
+#endif//*/
     #endregion
 
 
@@ -350,11 +350,11 @@ public class ObjectDetection : MonoBehaviour
         }
 
         #region Code Just For Testing With Video Instead Of The Actual Camera Feed     
-        /*
-//#if UNITY_EDITOR
+        
+#if UNITY_EDITOR
         if (videoPlayer.isPlaying)
             preprocess.ScaleImage(arVideoTexture, IMAGE_SIZE, IMAGE_SIZE, RunModel);
-//#endif
+#endif
         //*/
         #endregion
     }
