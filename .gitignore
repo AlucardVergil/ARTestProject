@@ -365,6 +365,6 @@ FodyWeavers.xsd
 
 
 #vagelis
-*.mp4
-Library/ArtifactDB
-Library/PackageCache/com.unity.burst@1.6.4/.Runtime/hostmac/lld
+#*.mp4
+#Library/ArtifactDB
+#Library/PackageCache/com.unity.burst@1.6.4/.Runtime/hostmac/lld
