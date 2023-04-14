@@ -44,8 +44,6 @@ ScriptsOnlyBuild:
     - UnityEngine.XR.ARFoundation.ARSession
     - UnityEngine.XR.ARFoundation.ARSessionOrigin
     - UnityEngine.XR.ARFoundation.ARTrackedImageManager
-    Unity.XR.ARKit.Editor.dll:
-    - UnityEditor.XR.ARKit.ARKitSettings
     Unity.XR.ARSubsystems.dll:
     - UnityEngine.XR.ARSubsystems.XRReferenceImageLibrary
     Unity.XR.Management.Editor.dll:
@@ -171,73 +169,73 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
+      Script: {instanceID: 1728}
+    - Class: 114
       Script: {instanceID: 1730}
     - Class: 114
-      Script: {instanceID: 1732}
+      Script: {instanceID: 1766}
     - Class: 114
-      Script: {instanceID: 1768}
+      Script: {instanceID: 1800}
     - Class: 114
-      Script: {instanceID: 1802}
+      Script: {instanceID: 1918}
     - Class: 114
-      Script: {instanceID: 1920}
+      Script: {instanceID: 2050}
     - Class: 114
-      Script: {instanceID: 2052}
+      Script: {instanceID: 2650}
     - Class: 114
-      Script: {instanceID: 2652}
+      Script: {instanceID: 3290}
     - Class: 114
-      Script: {instanceID: 3292}
+      Script: {instanceID: 3586}
     - Class: 114
-      Script: {instanceID: 3588}
+      Script: {instanceID: 3990}
     - Class: 114
-      Script: {instanceID: 3992}
+      Script: {instanceID: 4256}
     - Class: 114
-      Script: {instanceID: 4258}
+      Script: {instanceID: 4650}
     - Class: 114
-      Script: {instanceID: 4652}
+      Script: {instanceID: 4826}
     - Class: 114
-      Script: {instanceID: 4828}
+      Script: {instanceID: 4912}
     - Class: 114
-      Script: {instanceID: 4914}
+      Script: {instanceID: 5068}
     - Class: 114
-      Script: {instanceID: 5070}
+      Script: {instanceID: 5434}
     - Class: 114
-      Script: {instanceID: 5436}
+      Script: {instanceID: 5538}
     - Class: 114
-      Script: {instanceID: 5540}
+      Script: {instanceID: 5762}
     - Class: 114
-      Script: {instanceID: 5764}
+      Script: {instanceID: 5920}
     - Class: 114
-      Script: {instanceID: 5922}
+      Script: {instanceID: 6224}
     - Class: 114
-      Script: {instanceID: 6226}
+      Script: {instanceID: 6868}
     - Class: 114
-      Script: {instanceID: 6870}
+      Script: {instanceID: 6976}
     - Class: 114
-      Script: {instanceID: 6978}
+      Script: {instanceID: 7812}
     - Class: 114
-      Script: {instanceID: 7814}
+      Script: {instanceID: 7852}
     - Class: 114
-      Script: {instanceID: 7854}
+      Script: {instanceID: 8026}
     - Class: 114
-      Script: {instanceID: 8028}
+      Script: {instanceID: 8154}
     - Class: 114
-      Script: {instanceID: 8156}
+      Script: {instanceID: 8516}
     - Class: 114
-      Script: {instanceID: 8518}
+      Script: {instanceID: 8966}
     - Class: 114
-      Script: {instanceID: 8968}
+      Script: {instanceID: 9224}
     - Class: 114
-      Script: {instanceID: 9226}
+      Script: {instanceID: 9296}
     - Class: 114
-      Script: {instanceID: 9298}
+      Script: {instanceID: 10090}
     - Class: 114
-      Script: {instanceID: 10092}
+      Script: {instanceID: 10732}
     - Class: 114
-      Script: {instanceID: 10734}
+      Script: {instanceID: 10938}
     - Class: 114
-      Script: {instanceID: 10940}
-    - Class: 114
-      Script: {instanceID: 11226}
+      Script: {instanceID: 11224}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -291,7 +289,7 @@ ScriptsOnlyBuild:
     className: ARPlane
   - hash:
       serializedVersion: 2
-      Hash: 20b82a04943ee9b2b1a651c73ed754ff
+      Hash: 9a18dd49c68b213b8c3e346036108b5e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ObjectDetection
@@ -1642,4 +1640,4 @@ ScriptsOnlyBuild:
   platform: 13
   scenePathNames:
   - Assets/ExampleAssets/Scenes/SampleScene.unity
-  playerPath: C:/Users/AlucardVergil/UnityProjects/ARTestProject/Build/test57.apk
+  playerPath: C:/Users/AlucardVergil/UnityProjects/ARTestProject/Build/testbox.apk

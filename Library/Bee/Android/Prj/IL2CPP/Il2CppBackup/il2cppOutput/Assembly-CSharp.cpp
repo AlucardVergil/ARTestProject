@@ -371,6 +371,8 @@ struct PlaceObject_t69096E71B3AF67B110DC0077487F0BBDB8D9E1BF;
 struct Preprocess_tFF233FF3E734F337FFF428B3184B29F749443DA7;
 // QuitHandler
 struct QuitHandler_t3FF0D3487CCB387022E6BC98DE4503C67BA1B558;
+// UnityEngine.UI.RawImage
+struct RawImage_tFF12F7DB574FBDC1863CF607C7A12A5D9F8D6179;
 // UnityEngine.UI.RectMask2D
 struct RectMask2D_tACF92BE999C791A665BD1ADEABF5BCEB82846670;
 // UnityEngine.RectTransform
@@ -3306,6 +3308,8 @@ struct ObjectDetection_t9345D048A506C8DFE568341D4EBEE134B5AC5713  : public MonoB
 	GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* ___switchButton_60;
 	// System.Collections.Generic.Dictionary`2<System.String,System.Int32> ObjectDetection::trackedImageDictionary
 	Dictionary_2_t5C8F46F5D57502270DD9E1DA8303B23C7FE85588* ___trackedImageDictionary_61;
+	// UnityEngine.UI.RawImage ObjectDetection::display
+	RawImage_tFF12F7DB574FBDC1863CF607C7A12A5D9F8D6179* ___display_62;
 };
 
 // PlaceObject
@@ -4872,6 +4876,12 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR Rect_tA04E0F8A1830E767F40FB27ECD8D309303571F0
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR float Rect_get_width_m620D67551372073C9C32C4C4624C2A5713F7F9A9 (Rect_tA04E0F8A1830E767F40FB27ECD8D309303571F0D* __this, const RuntimeMethod* method) ;
 // System.Single UnityEngine.Rect::get_height()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR float Rect_get_height_mE1AA6C6C725CCD2D317BD2157396D3CF7D47C9D8 (Rect_tA04E0F8A1830E767F40FB27ECD8D309303571F0D* __this, const RuntimeMethod* method) ;
+// System.Int32 UnityEngine.Mathf::RoundToInt(System.Single)
+IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR int32_t Mathf_RoundToInt_m6A6E30BA4157D69DA47F02B43108882DDD7C4A70_inline (float ___f0, const RuntimeMethod* method) ;
+// System.Void UnityEngine.Rect::.ctor(System.Single,System.Single,System.Single,System.Single)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Rect__ctor_m18C3033D135097BEE424AAA68D91C706D2647F23 (Rect_tA04E0F8A1830E767F40FB27ECD8D309303571F0D* __this, float ___x0, float ___y1, float ___width2, float ___height3, const RuntimeMethod* method) ;
+// System.Void ObjectDetection::DrawBoxes(UnityEngine.Rect,System.Int32,System.Single)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ObjectDetection_DrawBoxes_m8B09A0364CDB284EED39110A947578FFD53B6BD7 (ObjectDetection_t9345D048A506C8DFE568341D4EBEE134B5AC5713* __this, Rect_tA04E0F8A1830E767F40FB27ECD8D309303571F0D ___boundingBox0, int32_t ___classIndex1, float ___probability2, const RuntimeMethod* method) ;
 // System.Single UnityEngine.Time::get_deltaTime()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR float Time_get_deltaTime_m7AB6BFA101D83E1D8F2EF3D5A128AEE9DDBF1A6D (const RuntimeMethod* method) ;
 // System.Single UnityEngine.Time::get_time()
@@ -4988,12 +4998,8 @@ inline int32_t List_1_IndexOf_m3B55357F85FD920F8271C8D163367CEE204F1C0E (List_1_
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR String_t* String_Concat_mF8B69BE42B5C5ABCAD3C176FBBE3010E0815D65D (String_t* ___str00, String_t* ___str11, String_t* ___str22, String_t* ___str33, const RuntimeMethod* method) ;
 // System.Single UnityEngine.Mathf::Clamp01(System.Single)
 IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR float Mathf_Clamp01_mD921B23F47F5347996C56DC789D1DE16EE27D9B1_inline (float ___value0, const RuntimeMethod* method) ;
-// System.Int32 UnityEngine.Mathf::RoundToInt(System.Single)
-IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR int32_t Mathf_RoundToInt_m6A6E30BA4157D69DA47F02B43108882DDD7C4A70_inline (float ___f0, const RuntimeMethod* method) ;
 // System.Void DetectedObject::.ctor()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void DetectedObject__ctor_m3FBEABA770F548A808DD440D2290722005CA1D7F (DetectedObject_tAE26F4E5AE5BDB25F38590A85BC28134101811AE* __this, const RuntimeMethod* method) ;
-// System.Void UnityEngine.Rect::.ctor(System.Single,System.Single,System.Single,System.Single)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Rect__ctor_m18C3033D135097BEE424AAA68D91C706D2647F23 (Rect_tA04E0F8A1830E767F40FB27ECD8D309303571F0D* __this, float ___x0, float ___y1, float ___width2, float ___height3, const RuntimeMethod* method) ;
 // System.Void System.Collections.Generic.List`1<DetectedObject>::Add(T)
 inline void List_1_Add_m1E62375FCB9460084D832836150935B18222A125_inline (List_1_t64850AB1DB8772F976E4A23CA4A5C6946A4F4A70* __this, DetectedObject_tAE26F4E5AE5BDB25F38590A85BC28134101811AE* ___item0, const RuntimeMethod* method)
 {
@@ -5023,8 +5029,6 @@ IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR int32_t DetectedObject_get_classI
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ObjectDetection_LoadingDetectedObjectUI_m4485FE1CAD791A799C0AD22367E4CB447BC1E8CC (ObjectDetection_t9345D048A506C8DFE568341D4EBEE134B5AC5713* __this, const RuntimeMethod* method) ;
 // System.Single DetectedObject::get_probability()
 IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR float DetectedObject_get_probability_mC59DEB00DBDFA02EB323B5EF69DA20C3E09301AC_inline (DetectedObject_tAE26F4E5AE5BDB25F38590A85BC28134101811AE* __this, const RuntimeMethod* method) ;
-// System.Void ObjectDetection::DrawBoxes(UnityEngine.Rect,System.Int32,System.Single)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ObjectDetection_DrawBoxes_m8B09A0364CDB284EED39110A947578FFD53B6BD7 (ObjectDetection_t9345D048A506C8DFE568341D4EBEE134B5AC5713* __this, Rect_tA04E0F8A1830E767F40FB27ECD8D309303571F0D ___boundingBox0, int32_t ___classIndex1, float ___probability2, const RuntimeMethod* method) ;
 // System.Boolean UnityEngine.Object::op_Inequality(UnityEngine.Object,UnityEngine.Object)
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool Object_op_Inequality_m4D656395C27694A7F33F5AA8DE80A7AAF9E20BA7 (Object_tC12DECB6760A7F2CBF65D9DCF18D044C2D97152C* ___x0, Object_tC12DECB6760A7F2CBF65D9DCF18D044C2D97152C* ___y1, const RuntimeMethod* method) ;
 // System.Void UnityEngine.Object::DestroyImmediate(UnityEngine.Object)
@@ -6263,38 +6267,44 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ObjectDetection_Start_mC944B05EA137DA4A2
 		s_Il2CppMethodInitialized = true;
 	}
 	int32_t V_0 = 0;
-	Rect_tA04E0F8A1830E767F40FB27ECD8D309303571F0D V_1;
-	memset((&V_1), 0, sizeof(V_1));
+	int32_t V_1 = 0;
+	int32_t V_2 = 0;
+	int32_t V_3 = 0;
+	Rect_tA04E0F8A1830E767F40FB27ECD8D309303571F0D V_4;
+	memset((&V_4), 0, sizeof(V_4));
+	int32_t V_5 = 0;
+	Rect_tA04E0F8A1830E767F40FB27ECD8D309303571F0D V_6;
+	memset((&V_6), 0, sizeof(V_6));
 	{
 		// for (int h = 0; h < uiPanelPrefab.Length; h++)
-		V_0 = 0;
-		goto IL_0016;
+		V_5 = 0;
+		goto IL_001a;
 	}
 
-IL_0004:
+IL_0005:
 	{
 		// uiPanelPrefab[h].SetActive(false);
 		GameObjectU5BU5D_tFF67550DFCE87096D7A3734EA15B75896B2722CF* L_0 = __this->___uiPanelPrefab_58;
-		int32_t L_1 = V_0;
+		int32_t L_1 = V_5;
 		NullCheck(L_0);
 		int32_t L_2 = L_1;
 		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_3 = (L_0)->GetAt(static_cast<il2cpp_array_size_t>(L_2));
 		NullCheck(L_3);
 		GameObject_SetActive_m638E92E1E75E519E5B24CF150B08CA8E0CDFAB92(L_3, (bool)0, NULL);
 		// for (int h = 0; h < uiPanelPrefab.Length; h++)
-		int32_t L_4 = V_0;
-		V_0 = ((int32_t)il2cpp_codegen_add(L_4, 1));
+		int32_t L_4 = V_5;
+		V_5 = ((int32_t)il2cpp_codegen_add(L_4, 1));
 	}
 
-IL_0016:
+IL_001a:
 	{
 		// for (int h = 0; h < uiPanelPrefab.Length; h++)
-		int32_t L_5 = V_0;
+		int32_t L_5 = V_5;
 		GameObjectU5BU5D_tFF67550DFCE87096D7A3734EA15B75896B2722CF* L_6 = __this->___uiPanelPrefab_58;
 		NullCheck(L_6);
 		if ((((int32_t)L_5) < ((int32_t)((int32_t)(((RuntimeArray*)L_6)->max_length)))))
 		{
-			goto IL_0004;
+			goto IL_0005;
 		}
 	}
 	{
@@ -6330,9 +6340,9 @@ IL_0016:
 		NullCheck(L_16);
 		Rect_tA04E0F8A1830E767F40FB27ECD8D309303571F0D L_17;
 		L_17 = RectTransform_get_rect_mC82A60F8C3805ED9833508CCC233689641207488(L_16, NULL);
-		V_1 = L_17;
+		V_6 = L_17;
 		float L_18;
-		L_18 = Rect_get_width_m620D67551372073C9C32C4C4624C2A5713F7F9A9((&V_1), NULL);
+		L_18 = Rect_get_width_m620D67551372073C9C32C4C4624C2A5713F7F9A9((&V_6), NULL);
 		__this->___screenWidth_24 = L_18;
 		// screenHeight = canvas.GetComponent<RectTransform>().rect.height; //Screen.height;
 		Canvas_t2DB4CEFDFF732884866C83F11ABF75F5AE8FFB26* L_19 = __this->___canvas_31;
@@ -6342,10 +6352,41 @@ IL_0016:
 		NullCheck(L_20);
 		Rect_tA04E0F8A1830E767F40FB27ECD8D309303571F0D L_21;
 		L_21 = RectTransform_get_rect_mC82A60F8C3805ED9833508CCC233689641207488(L_20, NULL);
-		V_1 = L_21;
+		V_6 = L_21;
 		float L_22;
-		L_22 = Rect_get_height_mE1AA6C6C725CCD2D317BD2157396D3CF7D47C9D8((&V_1), NULL);
+		L_22 = Rect_get_height_mE1AA6C6C725CCD2D317BD2157396D3CF7D47C9D8((&V_6), NULL);
 		__this->___screenHeight_25 = L_22;
+		// int x1Abs = Mathf.RoundToInt(0.5f * screenWidth);
+		float L_23 = __this->___screenWidth_24;
+		int32_t L_24;
+		L_24 = Mathf_RoundToInt_m6A6E30BA4157D69DA47F02B43108882DDD7C4A70_inline(((float)il2cpp_codegen_multiply((0.5f), L_23)), NULL);
+		V_0 = L_24;
+		// int y1Abs = Mathf.RoundToInt(0.5f * screenHeight);
+		float L_25 = __this->___screenHeight_25;
+		int32_t L_26;
+		L_26 = Mathf_RoundToInt_m6A6E30BA4157D69DA47F02B43108882DDD7C4A70_inline(((float)il2cpp_codegen_multiply((0.5f), L_25)), NULL);
+		V_1 = L_26;
+		// int x2Abs = Mathf.RoundToInt(0.75f * screenWidth);
+		float L_27 = __this->___screenWidth_24;
+		int32_t L_28;
+		L_28 = Mathf_RoundToInt_m6A6E30BA4157D69DA47F02B43108882DDD7C4A70_inline(((float)il2cpp_codegen_multiply((0.75f), L_27)), NULL);
+		V_2 = L_28;
+		// int y2Abs = Mathf.RoundToInt(0.75f * screenHeight);
+		float L_29 = __this->___screenHeight_25;
+		int32_t L_30;
+		L_30 = Mathf_RoundToInt_m6A6E30BA4157D69DA47F02B43108882DDD7C4A70_inline(((float)il2cpp_codegen_multiply((0.75f), L_29)), NULL);
+		V_3 = L_30;
+		// Rect testRect = new Rect(x1Abs, y1Abs, x2Abs - x1Abs, y2Abs - y1Abs);
+		int32_t L_31 = V_0;
+		int32_t L_32 = V_1;
+		int32_t L_33 = V_2;
+		int32_t L_34 = V_0;
+		int32_t L_35 = V_3;
+		int32_t L_36 = V_1;
+		Rect__ctor_m18C3033D135097BEE424AAA68D91C706D2647F23((&V_4), ((float)L_31), ((float)L_32), ((float)((int32_t)il2cpp_codegen_subtract(L_33, L_34))), ((float)((int32_t)il2cpp_codegen_subtract(L_35, L_36))), NULL);
+		// DrawBoxes(testRect, 0, 1);
+		Rect_tA04E0F8A1830E767F40FB27ECD8D309303571F0D L_37 = V_4;
+		ObjectDetection_DrawBoxes_m8B09A0364CDB284EED39110A947578FFD53B6BD7(__this, L_37, 0, (1.0f), NULL);
 		// }
 		return;
 	}
@@ -6927,7 +6968,7 @@ IL_025e:
 		VirtualActionInvoker1< String_t* >::Invoke(66 /* System.Void TMPro.TMP_Text::set_text(System.String) */, L_92, L_95);
 		// if (maxProbability > DETECTION_THRESHOLD)
 		float L_96 = V_7;
-		if ((!(((float)L_96) > ((float)(5.0f)))))
+		if ((!(((float)L_96) > ((float)(0.899999976f)))))
 		{
 			goto IL_03a1;
 		}
@@ -8882,6 +8923,30 @@ IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR void DetectedObject_set_boundingB
 		return;
 	}
 }
+IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR int32_t Mathf_RoundToInt_m6A6E30BA4157D69DA47F02B43108882DDD7C4A70_inline (float ___f0, const RuntimeMethod* method) 
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&Math_tEB65DE7CA8B083C412C969C92981C030865486CE_il2cpp_TypeInfo_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	int32_t V_0 = 0;
+	{
+		float L_0 = ___f0;
+		il2cpp_codegen_runtime_class_init_inline(Math_tEB65DE7CA8B083C412C969C92981C030865486CE_il2cpp_TypeInfo_var);
+		double L_1;
+		L_1 = bankers_round(((double)L_0));
+		V_0 = il2cpp_codegen_cast_double_to_int<int32_t>(L_1);
+		goto IL_000c;
+	}
+
+IL_000c:
+	{
+		int32_t L_2 = V_0;
+		return L_2;
+	}
+}
 IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR void Vector2Int__ctor_mC20D1312133EB8CB63EC11067088B043660F11CE_inline (Vector2Int_t69B2886EBAB732D9B880565E18E7568F3DE0CE6A* __this, int32_t ___x0, int32_t ___y1, const RuntimeMethod* method) 
 {
 	{
@@ -8981,30 +9046,6 @@ IL_002d:
 	{
 		float L_5 = V_1;
 		return L_5;
-	}
-}
-IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR int32_t Mathf_RoundToInt_m6A6E30BA4157D69DA47F02B43108882DDD7C4A70_inline (float ___f0, const RuntimeMethod* method) 
-{
-	static bool s_Il2CppMethodInitialized;
-	if (!s_Il2CppMethodInitialized)
-	{
-		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&Math_tEB65DE7CA8B083C412C969C92981C030865486CE_il2cpp_TypeInfo_var);
-		s_Il2CppMethodInitialized = true;
-	}
-	int32_t V_0 = 0;
-	{
-		float L_0 = ___f0;
-		il2cpp_codegen_runtime_class_init_inline(Math_tEB65DE7CA8B083C412C969C92981C030865486CE_il2cpp_TypeInfo_var);
-		double L_1;
-		L_1 = bankers_round(((double)L_0));
-		V_0 = il2cpp_codegen_cast_double_to_int<int32_t>(L_1);
-		goto IL_000c;
-	}
-
-IL_000c:
-	{
-		int32_t L_2 = V_0;
-		return L_2;
 	}
 }
 IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR Rect_tA04E0F8A1830E767F40FB27ECD8D309303571F0D DetectedObject_get_boundingBox_mB9761E758971F2995DE04017C63CE4D886AEA5F3_inline (DetectedObject_tAE26F4E5AE5BDB25F38590A85BC28134101811AE* __this, const RuntimeMethod* method) 

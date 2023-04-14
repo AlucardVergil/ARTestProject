@@ -183,16 +183,26 @@ public class ObjectDetection : MonoBehaviour
 
         #region Video For Testing Only (To Remove Later)
         
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         videoPlayer.Prepare();
         videoPlayer.prepareCompleted += OnVideoPrepared;
 #endif
 
 #if !UNITY_EDITOR
-        //Destroy(display.gameObject);  
+        Destroy(display.gameObject);  
 #endif
         //*/
         #endregion
+
+
+
+        int x1Abs = Mathf.RoundToInt(0.5f * screenWidth);
+        int y1Abs = Mathf.RoundToInt(0.5f * screenHeight);
+        int x2Abs = Mathf.RoundToInt(0.75f * screenWidth);
+        int y2Abs = Mathf.RoundToInt(0.75f * screenHeight);
+
+        Rect testRect = new Rect(x1Abs, y1Abs, x2Abs - x1Abs, y2Abs - y1Abs);
+        //DrawBoxes(testRect, 0, 1);
     }
 
     #region Video For Testing Only (To Remove Later)
@@ -452,8 +462,8 @@ public class ObjectDetection : MonoBehaviour
             float maxProbability = classProbabilities.Max();
             int maxIndex = classProbabilities.ToList().IndexOf(maxProbability);
             
-            textMeshPro.text = "Max: " + maxProbability.ToString()
-            + "\ni = " + i;
+            //textMeshPro.text = "Max: " + maxProbability.ToString()
+            //+ "\ni = " + i;
 
             #region Export Values to TXT For Testing
             /*
@@ -506,6 +516,9 @@ public class ObjectDetection : MonoBehaviour
                 int y1Abs = Mathf.RoundToInt(y1 * screenHeight);
                 int x2Abs = Mathf.RoundToInt(x2 * screenWidth);
                 int y2Abs = Mathf.RoundToInt(y2 * screenHeight);
+
+                textMeshPro.text = "Box: " + x1Abs.ToString() + " : " + y1Abs.ToString() + " - " + (x2Abs - x1Abs).ToString() + " : " + (y2Abs - y1Abs).ToString()
+                + "\ni = " + i;
 
                 // add the detected object to the list
                 DetectedObject obj = new DetectedObject();
