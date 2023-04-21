@@ -14,7 +14,7 @@ for image_file in image_files:
     with open(txt_path, 'r') as f:
         bbox_info = f.readline().strip().split(' ')
         bbox = ' '.join(bbox_info[1:]) + ' ' + bbox_info[0]
-        annotations.append(f'build/darknet/x64/data/{image_path} {bbox}')
+        annotations.append(f'{image_path} {bbox}')
 
 # Write the annotations to a text file
 with open('annotations.txt', 'w') as f:
