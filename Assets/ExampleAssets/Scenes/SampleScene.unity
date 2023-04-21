@@ -471,13 +471,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arCameraManager: {fileID: 22732922}
   preprocess: {fileID: 22732926}
-  modelFile: {fileID: 5022602860645237092, guid: 9718f9e6dadd9594c9742a63f16cfaed,
+  modelFile: {fileID: 5022602860645237092, guid: 2124fc89a06f0614fba57393f7d5cf71,
     type: 3}
   numClasses: 3
   loadingBar: {fileID: 1955572897}
-  loadingTime: 0.8
+  loadingTime: 0.3
   lastDetectionTimeDifference: 2
-  displayDurationAfterOutOfView: 2
+  displayDurationAfterOutOfView: 5
   textMeshPro: {fileID: 1520282558}
   sizeText: {fileID: 1094384504}
   boundingBoxPrefab: {fileID: 1576954766835901710, guid: 29ee5a6b149245243a6997fe228834b6,
@@ -1080,7 +1080,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_VideoClip
       value: 
-      objectReference: {fileID: 32900000, guid: 1c2a1150df0853443a4473e497926aed,
+      objectReference: {fileID: 32900000, guid: 7f721695741310542a19c32c7800c008,
         type: 3}
     - target: {fileID: 4701725092522344265, guid: 9cf944a04c6201b4e8ca50dacf9475e5,
         type: 3}
