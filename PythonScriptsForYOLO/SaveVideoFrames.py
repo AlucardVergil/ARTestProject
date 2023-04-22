@@ -40,7 +40,6 @@ while True:
 	if not ret:
 		break	
 	
-	
 	if not os.path.exists(destination):
 		os.makedirs(destination)
 	
