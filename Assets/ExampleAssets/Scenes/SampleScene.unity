@@ -471,13 +471,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arCameraManager: {fileID: 22732922}
   preprocess: {fileID: 22732926}
-  modelFile: {fileID: 5022602860645237092, guid: 9718f9e6dadd9594c9742a63f16cfaed,
+  modelFile: {fileID: 5022602860645237092, guid: 2124fc89a06f0614fba57393f7d5cf71,
     type: 3}
   numClasses: 3
   loadingBar: {fileID: 1955572897}
-  loadingTime: 0.8
+  loadingTime: 0.3
   lastDetectionTimeDifference: 2
-  displayDurationAfterOutOfView: 2
+  displayDurationAfterOutOfView: 5
   textMeshPro: {fileID: 1520282558}
   sizeText: {fileID: 1094384504}
   boundingBoxPrefab: {fileID: 1576954766835901710, guid: 29ee5a6b149245243a6997fe228834b6,
@@ -1024,7 +1024,7 @@ RectTransform:
   - {fileID: 1642982163}
   - {fileID: 295859692}
   m_Father: {fileID: 1828261588}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -1080,7 +1080,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_VideoClip
       value: 
-      objectReference: {fileID: 32900000, guid: 1c2a1150df0853443a4473e497926aed,
+      objectReference: {fileID: 32900000, guid: 7f721695741310542a19c32c7800c008,
         type: 3}
     - target: {fileID: 4701725092522344265, guid: 9cf944a04c6201b4e8ca50dacf9475e5,
         type: 3}
@@ -1974,7 +1974,7 @@ RectTransform:
   - {fileID: 268161858}
   - {fileID: 7966927}
   m_Father: {fileID: 1828261588}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -2050,7 +2050,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1828261588}
-  m_RootOrder: 2
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2294,7 +2294,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1828261588}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -2773,11 +2773,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1828261588}
-  m_RootOrder: 3
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.0000033, y: -71.525024}
+  m_AnchoredPosition: {x: 2, y: -71.525024}
   m_SizeDelta: {x: 615.104, y: 274.95}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1520282558
@@ -3046,7 +3046,7 @@ RectTransform:
   - {fileID: 554795839}
   - {fileID: 1881225121}
   m_Father: {fileID: 1828261588}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -3185,12 +3185,12 @@ RectTransform:
   m_Children:
   - {fileID: 480272513}
   - {fileID: 1955572896}
-  - {fileID: 1094384503}
-  - {fileID: 1520282557}
   - {fileID: 1195741816}
   - {fileID: 478979817}
   - {fileID: 1773684157}
   - {fileID: 1016213277}
+  - {fileID: 1094384503}
+  - {fileID: 1520282557}
   - {fileID: 1457681240}
   - {fileID: 1255335189}
   m_Father: {fileID: 0}

@@ -6,15 +6,17 @@ import argparse
 parser = argparse.ArgumentParser(description='Extract every nth frame from a video and save it to a folder.')
 parser.add_argument('-v', '--video', type=str, help='path to the video file')
 parser.add_argument('-d', '--destination', type=str, help='path to the destination folder', default=os.getcwd() + '/OutputFrames/')
-parser.add_argument('-n', type=int, help='select every nth frame', default=10)
+parser.add_argument('-n', type=int, help='select every nth frame', default=50)
+parser.add_argument('-o', '--output', type=str, help='output name of frames')
 
 # Parse the arguments
 args = parser.parse_args()
 
 # Extract the video path, destination folder, and n from the arguments
 video_path = args.video
-destination = args.destination
+destination = args.destination + '/' + args.output
 n = args.n
+output_name = args.output
 
 # Open the video file for reading
 cap = cv2.VideoCapture(video_path)
@@ -38,8 +40,11 @@ while True:
 	if not ret:
 		break	
 	
+	if not os.path.exists(destination):
+		os.makedirs(destination)
+	
     # Construct the file name for the saved frame
-	file_name = os.path.join(destination, f"frame_{frame_index}.jpg")
+	file_name = os.path.join(destination, f"{output_name}_{frame_index}.jpg")
         
     # Save the frame to the destination folder
 	cv2.imwrite(file_name, frame)
