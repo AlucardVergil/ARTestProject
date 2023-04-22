@@ -1,0 +1,27 @@
+-Open Ubuntu terminal and enter conda env "conda activate openlabeling_conda"
+-Navigate to path "cd /mnt/n/AnacondaEnv/Envs/openlabeling_conda/OpenLabeling/main"
+
+OpenLabeling:
+-Place video inside 'input' folder at "/mnt/n/AnacondaEnv/Envs/openlabeling_conda/OpenLabeling/main" and delete content of 'output/YOLO_darknet' at same path.
+-Run "python main.py -t 3" keep only the extracted image frames inside 'input' folder
+
+-To select 10% of video frames randomly to label in powershell (path is just an example. Make new folders):
+ C:\Users\AlucardVergil\Photos2> Get-ChildItem | Get-Random -Count ([int](Get-ChildItem | Measure-Object).Count * 0.1) | Copy-Item -Destination "C:\Users\AlucardVergil\RandomPhotos2\"
+-OR instead of selecting frames randomly, i can run the SaveVideoFrames.py like this `python SaveVideoFrames.py -v "20230420_105907 samsung s23.mp4" -n 50 -o "frame4" -d "OutputFrames"`. 
+This way it selects every nth frame and saves the frames with the output name and the frame number
+(for example "frame4_0.jpg"), inside folder destination+output ("OutputFrames/frame4/") and if the folder doesn't exist it creates it.
+-Replace content of 'input' folder from before, with 'RandomPhotos2' content and now run again "python main.py -t 3" and label
+-(ONLY IF I DON'T HAVE NEGATIVE SAMPLE SO THAT I WON'T DELETE NEGATIVE SAMPLE) Take all 'input' images and take ONLY the txts from 'output/YOLO_darknet' that have a size greater than 0 and paste in a folder at C:\Users\AlucardVergil\OneDrive\Έγγραφα\AVENG - ΠΑΜΑΚ Project\darknet-master\build\darknet\x64\data.
+-(ONLY IF I DON'T HAVE NEGATIVE SAMPLE SO THAT I WON'T DELETE NEGATIVE SAMPLE) Use the ClearImagesWithoutTxt.py that i created, with this command in linux conda `python ClearImagesWithoutTxt.py -p "exampleFolder/new"` or `python ClearImagesWithoutTxt.py --path "exampleFolder/new"` (path is the folder with the images and txts) or just place the script inside the folder with the images and txt and run it like this `python ClearImagesWithoutTxt.py` (sets the currect directory as default). NOTE: I also wrote a script that removes blurry images before i label them but needs adjustment to blur threshold so it's better for now to use this method.
+-Make changes to obj.names and obj.data files to fit model i am training.
+
+-In cmd inside the folder with the image files "C:\Users\AlucardVergil\OneDrive\Έγγραφα\AVENG - ΠΑΜΑΚ Project\darknet-master\build\darknet\x64\data", use this (go to path and type cmd):
+dir /b > filenames.txt
+
+-Then in linux run (change 'obj' from the command below, based on correct folder):
+sed 's/^/build\/darknet\/x64\/data\/obj\//' filenames.txt > train.txt   
+
+-Train yolo model (check other txt)
+
+-Run this in pytorch_conda in linux to convert to ONNX: 
+`python demo_darknet2onnx.py my-yolo-files/yolov4-tiny-obj.cfg my-yolo-files/obj.names my-yolo-files/yolov4-tiny-obj_final.weights my-yolo-files/img1.jpg 1`
