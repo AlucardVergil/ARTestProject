@@ -368,6 +368,5 @@ FodyWeavers.xsd
 #*.mp4
 Build/
 #Unity Generated Files
-Library/ArtifactDB
-Library/PackageCache/com.unity.burst@1.6.4/.Runtime/hostmac/lld
+Library/
 Temp/

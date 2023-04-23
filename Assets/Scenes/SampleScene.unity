@@ -478,6 +478,7 @@ MonoBehaviour:
   loadingTime: 0.3
   lastDetectionTimeDifference: 2
   displayDurationAfterOutOfView: 5
+  numFramesToSwitchInfoPanel: 20
   textMeshPro: {fileID: 1520282558}
   sizeText: {fileID: 1094384504}
   boundingBoxPrefab: {fileID: 1576954766835901710, guid: 29ee5a6b149245243a6997fe228834b6,
