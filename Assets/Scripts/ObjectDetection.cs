@@ -33,7 +33,7 @@ public class ObjectDetection : MonoBehaviour
     public NNModel modelFile;
     
     [Header("The number of object classes of my ONNX model")]
-    public int numClasses = 2;// the number of object classes of my ONNX model. You can see it from the 3rd value of the confs tensor       
+    public int numClasses = 2;// the number of object classes of my ONNX model. You can see it from the 3rd value of the confs tensor.     
     private Model model;
     private IWorker worker;
 
@@ -46,12 +46,14 @@ public class ObjectDetection : MonoBehaviour
     [Header("How much time should pass after detected object goes \nout of view before the info panel disappears")]
     [SerializeField] private float displayDurationAfterOutOfView = 2f;
     private float lastDetectionTime = 0;
-    private bool detectionLocked = false; //bool to check if object was detected for given loading time
-    private int previousClassIndex = 0;
+    private bool detectionLocked = false; //bool to check if object was detected for given loading time    
     private int camScreenWidth = 853; //this default value is not the correct one. It's just because i wanted to intantiate it with something
     private int camScreenHeight = 480;
     private float screenWidth = Screen.width;
     private float screenHeight = Screen.height;
+
+    private int previousClassIndex = 0;
+    private int changedClassCounter = 0;
 
     [Space][Space]
     [Header("Canvas UI")]
@@ -597,11 +599,15 @@ public class ObjectDetection : MonoBehaviour
         //start loading to lock onto a detected object        
         if (detectedObjects.Count != 0)
         {
-            previousClassIndex = detectedObjects[closestObjIndex].classIndex; //save class to check if the class changed in the next frame
+            //previousClassIndex = detectedObjects[closestObjIndex].classIndex; //save class to check if the class changed in the next frame
             //save the time that the last object detection frame occured, to use for loading bar
             lastDetectionTime = Time.time;
             if (detectionLocked == false) //if detected object hasn't locked yet, then start the loading bar
+            {
                 LoadingDetectedObjectUI();
+                previousClassIndex = detectedObjects[closestObjIndex].classIndex; //save detected object of current frame to check if it changed while detectionLocked was true.
+                changedClassCounter = 0; //make this variable zero when detectionLocked is false. This is used to check how many frames has past since the current detection object changed from the previous detected one.
+            }                
             else
             {
                 if (!drawBoxBool)
@@ -617,13 +623,32 @@ public class ObjectDetection : MonoBehaviour
                 //*/
                 #endregion
 
-                for (int h = 0; h < numClasses; h++)
+                //if current detection is different from the last detection when the bar loaded
+                if (previousClassIndex == detectedObjects[closestObjIndex].classIndex)
                 {
-                    if (h != detectedObjects[closestObjIndex].classIndex)
-                        uiPanelPrefab[h].SetActive(false);
-                    else
-                        uiPanelPrefab[detectedObjects[closestObjIndex].classIndex].SetActive(true);
+                    for (int h = 0; h < numClasses; h++)
+                    {
+                        if (h != detectedObjects[closestObjIndex].classIndex)
+                            uiPanelPrefab[h].SetActive(false);
+                        else
+                            uiPanelPrefab[detectedObjects[closestObjIndex].classIndex].SetActive(true);
+                    }
+                    changedClassCounter = 0;
                 }
+                else
+                {
+                    changedClassCounter++;
+                    if (changedClassCounter > 10) //if the detected object from the last 10 frames is different from the previous detected object then make detectionLocked false so that the bar loads again.
+                    {
+                        for (int h = 0; h < numClasses; h++)
+                        {
+                            uiPanelPrefab[h].SetActive(false);
+                        }
+                        detectionLocked = false;
+                    }                        
+                }
+
+                
             }
         }
         else

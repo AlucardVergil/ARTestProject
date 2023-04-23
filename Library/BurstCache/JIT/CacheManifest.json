@@ -7,7 +7,7 @@
     },
     {
       "FullName": "Unity.Barracuda, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null",
-      "LastWriteTime": "2023-04-20T13:02:18.5001183Z"
+      "LastWriteTime": "2023-04-23T10:06:18.1911781Z"
     },
     {
       "FullName": "mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
@@ -15,15 +15,19 @@
     },
     {
       "FullName": "Unity.Mathematics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-      "LastWriteTime": "2023-04-20T13:02:18.5261186Z"
+      "LastWriteTime": "2023-04-23T10:06:18.2151778Z"
     },
     {
       "FullName": "netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51",
       "LastWriteTime": "2022-03-22T09:51:36Z"
     },
     {
+      "FullName": "mscorlib, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "LastWriteTime": "2022-03-22T09:51:36Z"
+    },
+    {
       "FullName": "Unity.Burst, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
-      "LastWriteTime": "2023-04-20T13:02:18.3070439Z"
+      "LastWriteTime": "2023-04-23T10:06:18.0991781Z"
     }
   ],
   "Functions": [
@@ -94,8 +98,8 @@
       "AssemblyDependencyIndices": [
         0,
         1,
-        2,
         3,
+        2,
         4
       ]
     },
@@ -119,6 +123,7 @@
       "AssemblyDependencyIndices": [
         0,
         1,
+        5,
         2,
         3,
         4
@@ -157,8 +162,8 @@
       "AssemblyDependencyIndices": [
         0,
         1,
-        2,
         4,
+        2,
         3
       ]
     },
@@ -168,7 +173,7 @@
       "ModuleHash": "d66a3f77476d434e9875672c3326e0af",
       "LinkName": "CDCA4A5193BE5947",
       "AssemblyDependencyIndices": [
-        5,
+        6,
         4,
         2
       ]
@@ -179,7 +184,7 @@
       "ModuleHash": "52ecba31defc219ea7865f51f1ba13d2",
       "LinkName": "801E9A000BB37B05",
       "AssemblyDependencyIndices": [
-        5,
+        6,
         4,
         2
       ]
