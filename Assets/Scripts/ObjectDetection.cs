@@ -20,8 +20,14 @@ public class ObjectDetection : MonoBehaviour
     const string INPUT_NAME = "input";
     const string OUTPUT_NAME = "boxes";
     const string OUTPUT_NAME_2 = "confs";
-    const float DETECTION_THRESHOLD = 0.9f;
-    
+
+#if UNITY_EDITOR
+    const float DETECTION_THRESHOLD = 0.8f;
+#else
+    const float DETECTION_THRESHOLD = 8f;
+#endif
+
+
     public ARCameraManager arCameraManager;
     public Preprocess preprocess;
     public NNModel modelFile;
@@ -263,7 +269,7 @@ public class ObjectDetection : MonoBehaviour
 
     }
 #endif//*/
-    #endregion
+#endregion
 
 
     void Update()
@@ -517,7 +523,7 @@ public class ObjectDetection : MonoBehaviour
                 int x2Abs = Mathf.RoundToInt(x2 * screenWidth);
                 int y2Abs = Mathf.RoundToInt(y2 * screenHeight);
 
-                textMeshPro.text = "Box: " + x1Abs.ToString() + " : " + y1Abs.ToString() + " - " + (x2Abs - x1Abs).ToString() + " : " + (y2Abs - y1Abs).ToString()
+                textMeshPro.text = "Box: " + x1Abs.ToString() + " : " + y1Abs.ToString() + " = " + (x2Abs - x1Abs).ToString() + " : " + (y2Abs - y1Abs).ToString()
                 + "\ni = " + i;
 
                 // add the detected object to the list

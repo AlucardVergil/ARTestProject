@@ -1,0 +1,47 @@
+open folder path and the type cmd
+
+N:\AVENG - ΠΑΜΑΚ Project\darknet-master>darknet.exe detect cfg/yolov4-tiny.cfg yolov4-tiny.weights data/dog.jpg
+
+
+cd "C:\Users\AlucardVergil\OneDrive\Έγγραφα\AVENG - ΠΑΜΑΚ Project\darknet-master"
+(or type cmd in windows explorer)
+
+
+for training:
+darknet.exe detector train build/darknet/x64/data/obj.data build/darknet/x64/data/yolov4-tiny-obj.cfg build/darknet/x64/yolov4-tiny.conv.29
+
+for training (cars test)
+darknet.exe detector train build/darknet/x64/data/obj2.data cfg/yolov4-tiny-obj-cars.cfg build/darknet/x64/yolov4-tiny.conv.29
+
+to resume training (replace "yolov4-tiny-obj_last.weights" with the right one, if needed):
+darknet.exe detector train build/darknet/x64/data/obj.data cfg/yolov4-tiny-obj.cfg build/darknet/x64/backup/yolov4-tiny-obj_last.weights
+
+after training command for detection (replace "yolo-obj_2000.weights" with the right one):
+darknet.exe detector test build/darknet/x64/data/obj.data cfg/yolov4-tiny-obj.cfg build/darknet/x64/backup/yolov4-tiny-obj_last.weights
+
+
+darknet.exe detector test build/darknet/x64/data/obj.data build/darknet/x64/data/yolov4-tiny-obj.cfg build/darknet/x64/backup/yolov4-tiny-obj_last.weights build/darknet/x64/data/obj-test/img1.jpg -thresh 0.3
+
+
+for testing video:
+darknet.exe detector demo build/darknet/x64/data/obj.data build/darknet/x64/data/yolov4-tiny-obj.cfg build/darknet/x64/backup/yolov4-tiny-obj_last.weights build/darknet/x64/data/obj-test/test4.mp4 -thresh 0.5 -i 0 -out_filename build/darknet/x64/data/obj-test/output4.avi
+
+for cars test video:
+darknet.exe detector demo build/darknet/x64/data/obj2.data cfg/yolov4-tiny-obj.cfg build/darknet/x64/backup/TestCars/yolov4-tiny-obj_last.weights build/darknet/x64/data/obj-test/vid3.mp4 -thresh 0.5 -i 0 -out_filename build/darknet/x64/data/obj-test/outputvid3.avi
+
+
+for testing webcam:
+darknet.exe detector demo build/darknet/x64/data/obj2.data cfg/yolov4-tiny-obj.cfg build/darknet/x64/backup/TestCars/yolov4-tiny-obj_last.weights -c 0
+
+
+
+---
+To Validate Weight files (highest mAP) with 90% accuracy threshold for class label and use -iou_thresh for bounding box accuracy:
+darknet.exe detector map build/darknet/x64/data/obj.data build/darknet/x64/data/yolov4-tiny-obj.cfg build/darknet/x64/backup/yolov4-tiny-obj_final.weights -thresh 0.9 -iou_thresh 0.5
+
+
+
+PYTORCH
+
+python train.py -l 0.001 -g 0 -pretrained yolov4.conv.29.pth -classes 3 -dir objSamsung
+
