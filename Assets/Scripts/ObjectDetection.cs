@@ -52,6 +52,14 @@ public class ObjectDetection : MonoBehaviour
     private float screenWidth = Screen.width;
     private float screenHeight = Screen.height;
 
+    [Space][Space]
+    [Header("When it detects a different object, in some frames, \nthan the one for which the detection was locked, for how \nmany frames does it need to detect " +
+        "the new object \nbefore it breaks the detection lock.")]
+    [Tooltip("For example if it locked on turbine and at some point it detects pliers for 20 frames in a row " +
+        "then it will make detectionLocked false. This is to prevent it from changing the detected object if it detects for example for 60 frames turbine and " +
+        "then for some reason it detects pliers for 5 frames. Realistically the detection shouldn't change so suddenly from one frame to the next so this makes " +
+        "sure that it did detect a new object for some frames before switching.")]
+    public int numFramesToSwitchInfoPanel = 20;
     private int previousClassIndex = 0;
     private int changedClassCounter = 0;
 
@@ -638,7 +646,9 @@ public class ObjectDetection : MonoBehaviour
                 else
                 {
                     changedClassCounter++;
-                    if (changedClassCounter > 10) //if the detected object from the last 10 frames is different from the previous detected object then make detectionLocked false so that the bar loads again.
+                    //if the detected object from the last 20 frames (for example) is different from the previous detected object then make detectionLocked
+                    //false so that the bar loads again.
+                    if (changedClassCounter > numFramesToSwitchInfoPanel) 
                     {
                         for (int h = 0; h < numClasses; h++)
                         {
