@@ -58,7 +58,7 @@ public class ObjectDetection : MonoBehaviour
     [Tooltip("For example if it locked on turbine and at some point it detects pliers for 20 frames in a row " +
         "then it will make detectionLocked false. This is to prevent it from changing the detected object if it detects for example for 60 frames turbine and " +
         "then for some reason it detects pliers for 5 frames. Realistically the detection shouldn't change so suddenly from one frame to the next so this makes " +
-        "sure that it did detect a new object for some frames before switching.")]
+        "sure that it did detect a new object for some frames before switching. ")]
     public int numFramesToSwitchInfoPanel = 20;
     private int previousClassIndex = 0;
     private int changedClassCounter = 0;
