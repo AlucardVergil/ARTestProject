@@ -368,17 +368,6 @@ FodyWeavers.xsd
 #*.mp4
 Build/
 #Unity Generated Files
-Library/
-Temp/
-Library/StateCache/MainStageHierarchy/8f/8fd65426490f636435c901d65ce7ed24.json
-Library/SourceAssetDB
-Library/Search/transactions.db
-Library/ScriptAssemblies/Assembly-CSharp.dll
-Library/SceneVisibilityState.asset
-Library/Bee/TundraBuildState.state.map
-Library/Bee/TundraBuildState.state
-Library/Bee/tundra.log.json
-Library/Bee/tundra.digestcache
-Library/Bee/fullprofile.json
-Library/Bee/backend_profiler0.traceevents
 Library/ArtifactDB
+Library/PackageCache/com.unity.burst@1.6.4/.Runtime/hostmac/lld
+Temp/
