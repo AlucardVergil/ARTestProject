@@ -25,3 +25,6 @@ sed 's/^/build\/darknet\/x64\/data\/obj\//' filenames.txt > train.txt
 
 -Run this in pytorch_conda in linux to convert to ONNX: 
 `python demo_darknet2onnx.py my-yolo-files/yolov4-tiny-obj.cfg my-yolo-files/obj.names my-yolo-files/yolov4-tiny-obj_final.weights my-yolo-files/img1.jpg 1`
+
+
+-If i want to count and separate the dataset based on class run the python script from linux: `python DisplayClassCount.py -p "objSamsung"`
