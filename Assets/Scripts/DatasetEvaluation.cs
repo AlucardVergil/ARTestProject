@@ -1,12 +1,16 @@
+#undef DATASET_EVALUATION
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System.Linq;
 
 public class DatasetEvaluation : MonoBehaviour
 {
-    public bool validationDatasetReady = false;
+#if DATASET_EVALUATION
+    [HideInInspector] public bool validationDatasetReady = false;
 
     private ClassMetrics[] classMetrics;
 
@@ -182,7 +186,7 @@ public class DatasetEvaluation : MonoBehaviour
                 classMetrics[classID].FP++;
             }
         }
-        classMetrics[classID].FN = groundTruth.Count;
+        classMetrics[classID].FN = groundTruth.Count;        
     }
 
 
@@ -195,8 +199,9 @@ public class DatasetEvaluation : MonoBehaviour
         precision = (float)classMetrics[classIndex].TP / (classMetrics[classIndex].TP + classMetrics[classIndex].FP);
         recall = (float)classMetrics[classIndex].TP / (classMetrics[classIndex].TP + classMetrics[classIndex].FN);
         f1Score = 2 * (precision * recall) / (precision + recall);
+        Debug.Log("classMetrics " + classMetrics.Length + " TP = " + classMetrics[classIndex].TP + " FP = " + classMetrics[classIndex].FP + " FN = " + classMetrics[classIndex].FN);
 
-        Debug.Log("Class " + classIndex + ": Precision = " + precision.ToString("F3") + " Recall = " + recall.ToString("F3") + " F1_Score = " + f1Score.ToString("F3"));
+        Debug.Log("Class " + classIndex + ": Precision = " + precision + " Recall = " + recall + " F1_Score = " + f1Score);
     }
 
 
@@ -224,4 +229,5 @@ public class DatasetEvaluation : MonoBehaviour
     }
 
     #endregion
+#endif
 }

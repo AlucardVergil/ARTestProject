@@ -1,4 +1,5 @@
 #define ENABLED_VIDEO_TEST
+#undef DATASET_EVALUATION
 
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
@@ -144,9 +145,14 @@ public class ObjectDetection : MonoBehaviour
         {"Pliers", 2}
     };
 
+#if DATASET_EVALUATION
+    DatasetEvaluation datasetEvaluation;
+    List<DatasetEvaluation.ImageData> validationDataset;
+    private int imgIndex = 0;
+#endif
 
     #region Video For Testing Only (To Remove Later)
-    
+
     [Header("The raw image that the video frames will display on and the \nvideo player component (These are for testing with video and \nto be removed later)")]
     public RawImage display; //I didn't place this inside the #if UNITY_EDITOR because i need this to destroy the gameobject on build
 
@@ -220,6 +226,27 @@ public class ObjectDetection : MonoBehaviour
 
         Rect testRect = new Rect(x1Abs, y1Abs, x2Abs - x1Abs, y2Abs - y1Abs);
         //DrawBoxes(testRect, 0, 1);
+
+#if DATASET_EVALUATION
+        //For Dataset Evaluation
+        datasetEvaluation = GetComponent<DatasetEvaluation>();
+        validationDataset = datasetEvaluation.GetValidationDataset();
+
+
+        if (datasetEvaluation.validationDatasetReady)
+        {
+            //For Dataset Evaluation run validation dataset
+            for (int i = 0; i < validationDataset.Count; i++)
+            {
+                //Debug.Log(i + " txtPath: " + validationDataset[i].TxtPath);
+                imgIndex = i;                
+                preprocess.ScaleImage(validationDataset[i].Texture, IMAGE_SIZE, IMAGE_SIZE, RunModel);
+            }
+
+            float totalPrecision, totalRecall, totalF1score;
+            datasetEvaluation.CalculateMetricsTotal(numClasses, out totalPrecision, out totalRecall, out totalF1score);
+        }    
+#endif
     }
 
     #region Video For Testing Only (To Remove Later)
@@ -313,7 +340,7 @@ public class ObjectDetection : MonoBehaviour
 
         if (QRViewBool) // Don't execute the rest of this code when QR is enabled
             return;
-
+        
 
         #region Skip Frames For Optimization
         //Skip a number of frames set by the framesToSkip variable, for optimization purposes
@@ -566,6 +593,10 @@ public class ObjectDetection : MonoBehaviour
             }            
         }
 
+#if DATASET_EVALUATION
+        //For DatasetEvaluation. Evaluate prediction with validation dataset
+        datasetEvaluation.Evaluate(validationDataset[imgIndex].TxtPath, detectedObjects);
+#endif
 
         //loop through all the detected objects and find the one whose bounding box's center is closer the screen center
         float closestDistance = Mathf.Infinity;
@@ -680,7 +711,7 @@ public class ObjectDetection : MonoBehaviour
             }
         }
 
-        #endregion
+#endregion
 
             // Destroy the Texture2D objects and release their associated memory
             //DestroyImmediate(arTexture);
