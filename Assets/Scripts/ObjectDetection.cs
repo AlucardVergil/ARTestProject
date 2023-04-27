@@ -22,7 +22,7 @@ public class ObjectDetection : MonoBehaviour
     const string OUTPUT_NAME_2 = "confs";
 
 #if UNITY_EDITOR
-    const float DETECTION_THRESHOLD = 0.8f;
+    const float DETECTION_THRESHOLD = 0.9f;
 #else
     const float DETECTION_THRESHOLD = 8f;
 #endif

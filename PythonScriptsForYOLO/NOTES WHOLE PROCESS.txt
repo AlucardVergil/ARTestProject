@@ -19,7 +19,7 @@ This way it selects every nth frame and saves the frames with the output name an
 dir /b > filenames.txt
 
 -Then in linux run (change 'obj' from the command below, based on correct folder):
-sed 's/^/build\/darknet\/x64\/data\/obj\//' filenames.txt > train.txt   
+sed 's/^/build\/darknet\/x64\/data\/objSamsung\//' filenames.txt > train.txt
 
 -Train yolo model (check other txt)
 
