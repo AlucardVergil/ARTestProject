@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\QuitHandler.cs" />
     <Compile Include="Assets\Scripts\ARObjectInfoPanel.cs" />
     <Compile Include="Assets\ExampleAssets\Scripts\AnchorCreator.cs" />
+    <Compile Include="Assets\Scripts\DatasetEvaluation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
