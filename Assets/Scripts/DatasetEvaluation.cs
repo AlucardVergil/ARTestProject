@@ -6,17 +6,24 @@ using System.IO;
 
 public class DatasetEvaluation : MonoBehaviour
 {
-    private int truePositives = 0;
-    private int falsePositives = 0;
-    private int trueNegatives = 0;
-    private int falseNegatives = 0;
     public bool validationDatasetReady = false;
 
+    private ClassMetrics[] classMetrics;
+
+
     #region Read And Save Validation Dataset Texture And File Names
-    private List<ImageData> imageDataList = new List<ImageData>();
+
+    private List<ImageData> imageDataList = new List<ImageData>(); //ImageData is a nested class inside this script
 
     private void Awake()
     {
+        //intantiate the array with the number of class of the model
+        classMetrics = new ClassMetrics[GetComponent<ObjectDetection>().numClasses];
+        for (int i = 0; i < classMetrics.Length; i++)
+        {
+            classMetrics[i] = new ClassMetrics(0, 0, 0, 0);
+        }
+
         string folderPath = Application.dataPath + "/ValidationDataset"; // Path to the folder containing the images
         string[] imagePaths = Directory.GetFiles(folderPath, "*.jpg"); // Change the extension if your images have a different format
 
@@ -24,8 +31,8 @@ public class DatasetEvaluation : MonoBehaviour
         {
             // Read and process each image
             Texture2D imageTexture = LoadImage(imagePath);
-            string fileName = Path.GetFileName(imagePath);
-            ImageData imageData = new ImageData(fileName, imageTexture);
+            string txtPath = folderPath + "/" + Path.GetFileNameWithoutExtension(imagePath) + ".txt";
+            ImageData imageData = new ImageData(txtPath, imageTexture);
             imageDataList.Add(imageData);
         }
         validationDatasetReady = true;
@@ -42,12 +49,12 @@ public class DatasetEvaluation : MonoBehaviour
     //nested class
     public class ImageData
     {
-        public string FileName { get; }
+        public string TxtPath { get; }
         public Texture2D Texture { get; }
 
-        public ImageData(string fileName, Texture2D texture)
+        public ImageData(string txtPath, Texture2D texture)
         {
-            FileName = fileName;
+            TxtPath = txtPath;
             Texture = texture;
         }
     }
@@ -61,6 +68,26 @@ public class DatasetEvaluation : MonoBehaviour
 
 
     #region Evaluate Validation Dataset
+
+    //Nested class to save TP, FP, TN and FN for each class separately
+    public class ClassMetrics
+    {
+        public int TP { get; set; }
+        public int FP { get; set; }
+        public int TN { get; set; }
+        public int FN { get; set; }
+
+        public ClassMetrics(int truePositive, int falsePositive, int trueNegative, int falseNegative)
+        {
+            TP = truePositive;
+            FP = falsePositive;
+            TN = trueNegative;
+            FN = falseNegative;
+        }
+    }
+
+
+
     // Function to parse the annotation text files
     private List<Tuple<int, float, float, float, float>> ParseAnnotationTxt(string txtFile)
     {
@@ -105,12 +132,19 @@ public class DatasetEvaluation : MonoBehaviour
         List<Tuple<int, float, float, float, float>> groundTruth = ParseAnnotationTxt(txtFile);
         // Parse your predictions from the corresponding predictions file (format depending on your implementation)
 
+        int classID = 0; //this is only to save classID because this line `classMetrics[classID].FN = groundTruth.Count;` is outside of foreach
+
         foreach (var prediction in predictions)
         {
+            classID = prediction.classIndex;
+
             //convert bounding box from Rect to Tuple 
-            Tuple<int, float, float, float, float> boundingBox = 
-                new Tuple<int, float, float, float, float>(prediction.classIndex, prediction.boundingBox.x, prediction.boundingBox.y, 
-                prediction.boundingBox.width + prediction.boundingBox.x, prediction.boundingBox.height + prediction.boundingBox.y);
+            Tuple<int, float, float, float, float> boundingBox = new Tuple<int, float, float, float, float>(
+                prediction.classIndex, 
+                prediction.boundingBox.x, 
+                prediction.boundingBox.y, 
+                prediction.boundingBox.width + prediction.boundingBox.x, 
+                prediction.boundingBox.height + prediction.boundingBox.y);
 
 
             float bestIoU = 0;
@@ -118,38 +152,76 @@ public class DatasetEvaluation : MonoBehaviour
 
             foreach (var annotation in groundTruth)
             {
-                float iou = CalculateIoU(annotation, boundingBox);
-                if (iou > bestIoU)
+                // Check if the class ID matches
+                if (annotation.Item1 == boundingBox.Item1)
                 {
-                    bestIoU = iou;
-                    bestMatch = annotation;
+                    float iou = CalculateIoU(annotation, boundingBox);
+                    if (iou > bestIoU)
+                    {
+                        bestIoU = iou;
+                        bestMatch = annotation;
+                    }
                 }
             }
+
 
             if (bestMatch != null)
             {
                 if (bestIoU >= 0.5)
                 {
-                    truePositives++;
+                    classMetrics[classID].TP++;
                     groundTruth.Remove(bestMatch);
                 }
                 else
                 {
-                    falsePositives++;
+                    classMetrics[classID].FP++;
                 }
             }
             else
             {
-                falsePositives++;
+                classMetrics[classID].FP++;
             }
         }
-
-        falseNegatives = groundTruth.Count;
-        // Calculate precision, recall, TN based on your requirements
-
-        // Calculate mAP based on your requirements
-
-        // Output
+        classMetrics[classID].FN = groundTruth.Count;
     }
+
+
+    //Calculates Precision, Recall, F1_Score based on the TP,FP,FN that it gathered from the Evaluate method
+    //The out float variables are to extract the variables easier like this:
+    //float precision, recall, f1score;
+    //"CalculateMetrics(out precision, out recall, out f1score);"
+    public void CalculateMetricsByClass(int classIndex, out float precision, out float recall, out float f1Score)
+    {
+        precision = (float)classMetrics[classIndex].TP / (classMetrics[classIndex].TP + classMetrics[classIndex].FP);
+        recall = (float)classMetrics[classIndex].TP / (classMetrics[classIndex].TP + classMetrics[classIndex].FN);
+        f1Score = 2 * (precision * recall) / (precision + recall);
+
+        Debug.Log("Class " + classIndex + ": Precision = " + precision.ToString("F3") + " Recall = " + recall.ToString("F3") + " F1_Score = " + f1Score.ToString("F3"));
+    }
+
+
+    //Calculate metrics for each class and then add them and divide them by the number of classes to get total metrics for the model
+    public void CalculateMetricsTotal(int classCount, out float totalPrecision, out float totalRecall, out float totalF1score)
+    {
+        totalPrecision = 0;
+        totalRecall = 0;
+        totalF1score = 0;
+        float precision, recall, f1Score;
+
+        for (int i = 0; i < classCount; i++)
+        {            
+            CalculateMetricsByClass(i, out precision, out recall, out f1Score);
+            totalPrecision += precision;
+            totalRecall += recall;
+            totalF1score += f1Score;
+        }
+
+        totalPrecision = totalPrecision / classCount;
+        totalRecall = totalRecall / classCount;
+        totalF1score = totalF1score / classCount;
+
+        Debug.Log("Total: Precision = " + totalPrecision.ToString("F3") + " Recall = " + totalRecall.ToString("F3") + " F1_Score = " + totalF1score.ToString("F3"));
+    }
+
     #endregion
 }

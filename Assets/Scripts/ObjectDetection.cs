@@ -16,13 +16,14 @@ using UnityEngine.Networking;
 
 public class ObjectDetection : MonoBehaviour
 {
-    const int IMAGE_SIZE = 416;
+    [Header("Network Input Size")]
+    [SerializeField] int IMAGE_SIZE = 416;
     const string INPUT_NAME = "input";
     const string OUTPUT_NAME = "boxes";
     const string OUTPUT_NAME_2 = "confs";
 
 #if UNITY_EDITOR
-    const float DETECTION_THRESHOLD = 0.8f;
+    const float DETECTION_THRESHOLD = 0.9f;
 #else
     const float DETECTION_THRESHOLD = 8f;
 #endif
