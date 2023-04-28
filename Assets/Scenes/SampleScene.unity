@@ -471,11 +471,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arCameraManager: {fileID: 22732922}
   preprocess: {fileID: 22732926}
-  modelFile: {fileID: 5022602860645237092, guid: 8091b318d6dbdc24d93e9b482717cad0,
-    type: 3}
+  modelFile:
+  - {fileID: 5022602860645237092, guid: fef3539b340d4324fa8bd5c403b993ba, type: 3}
+  - {fileID: 5022602860645237092, guid: 8f41bec0b6648894986727cc6db77cb4, type: 3}
+  - {fileID: 5022602860645237092, guid: be5d90f0bd608144785be4a363de29e3, type: 3}
   numClasses: 3
   loadingBar: {fileID: 1955572897}
-  loadingTime: 0.3
+  loadingTime: 0.1
   lastDetectionTimeDifference: 2
   displayDurationAfterOutOfView: 5
   numFramesToSwitchInfoPanel: 20
