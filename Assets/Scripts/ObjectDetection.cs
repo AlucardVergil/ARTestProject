@@ -429,11 +429,6 @@ public class ObjectDetection : MonoBehaviour
             detectionBoxes = worker[i].PeekOutput(OUTPUT_NAME);
             detectionScores = worker[i].PeekOutput(OUTPUT_NAME_2);
 
-            Debug.Log(i + " worker 0 = " + worker[0]);
-            Debug.Log(i + " worker 1 = " + worker[1]);
-            Debug.Log(i + " worker 2 = " + worker[2]);
-
-            Debug.Log(i + " detectionScores 0 = " + detectionScores);
 
             // convert the tensor outputs to arrays
             //The ToReadOnlyArray() method is used to convert the Tensor object to a read-only array. This is because the Tensor object is mutable, which means that it can be changed after it is created. However, in some cases, it may be desirable to use an immutable data structure like a read-only array to prevent accidental modification of the data.
