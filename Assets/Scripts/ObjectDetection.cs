@@ -1,4 +1,5 @@
 #define ENABLED_VIDEO_TEST
+#define MULTI_MODEL
 
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
@@ -13,6 +14,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Video;
 using UnityEngine.Networking;
+using Unity.VisualScripting;
 
 public class ObjectDetection : MonoBehaviour
 {
@@ -30,12 +32,18 @@ public class ObjectDetection : MonoBehaviour
 
     public ARCameraManager arCameraManager;
     public Preprocess preprocess;
+#if MULTI_MODEL
+    public NNModel[] modelFile;
+    private Model[] model;
+    private IWorker[] worker;
+#else
     public NNModel modelFile;
-    
-    [Header("The number of object classes of my ONNX model")]
-    public int numClasses = 2;// the number of object classes of my ONNX model. You can see it from the 3rd value of the confs tensor.     
     private Model model;
     private IWorker worker;
+#endif
+
+    [Header("The number of object classes of my ONNX model")]
+    public int numClasses = 2;// the number of object classes of my ONNX model. You can see it from the 3rd value of the confs tensor.     
 
     [Header("The slider bar for object locking")]
     public Slider loadingBar;
@@ -114,6 +122,7 @@ public class ObjectDetection : MonoBehaviour
     public Tensor tensor;
     public Tensor detectionBoxes;
     public Tensor detectionScores;
+
     private Dictionary<string, Tensor> inputs;
     private float[,,,] scores4D;
     private float[,,,] boxes4D;
@@ -183,9 +192,20 @@ public class ObjectDetection : MonoBehaviour
         {
             uiPanelPrefab[h].SetActive(false);
         }
-        
+
+#if MULTI_MODEL
+        model = new Model[modelFile.Length];
+        worker = new IWorker[modelFile.Length];
+
+        for (int i = 0; i < modelFile.Length; i++)
+        {
+            model[i] = ModelLoader.Load(modelFile[i]);
+            worker[i] = WorkerFactory.CreateWorker(WorkerFactory.Type.ComputePrecompiled, model[i]);
+        }
+#else
         model = ModelLoader.Load(modelFile);
         worker = WorkerFactory.CreateWorker(WorkerFactory.Type.ComputePrecompiled, model);
+#endif
 
         loadingBar.maxValue = loadingTime;
         loadingBar.gameObject.SetActive(false);
@@ -397,6 +417,71 @@ public class ObjectDetection : MonoBehaviour
             { INPUT_NAME, tensor }
         };
 
+#if MULTI_MODEL
+        List<float[,,,]> boxes4DList = new List<float[,,,]>();
+        List<float[,,,]> scores4DList = new List<float[,,,]>();
+
+        for (int i = 0; i < modelFile.Length; i++)
+        {
+            // Pass the Tensor as input to the ONNX model
+            worker[i].Execute(inputs);
+
+            detectionBoxes = worker[i].PeekOutput(OUTPUT_NAME);
+            detectionScores = worker[i].PeekOutput(OUTPUT_NAME_2);
+
+
+            // convert the tensor outputs to arrays
+            //The ToReadOnlyArray() method is used to convert the Tensor object to a read-only array. This is because the Tensor object is mutable, which means that it can be changed after it is created. However, in some cases, it may be desirable to use an immutable data structure like a read-only array to prevent accidental modification of the data.
+            //Regarding the conversion to a 4D array, it is possible that the boxesTensor has a different shape than what is expected by the rest of the code.By converting the tensor to a read - only array and then to a 4D array with the expected shape, we ensure that the data is in the correct format for the rest of the code to work properly.
+            scoresArray = detectionScores.ToReadOnlyArray();
+            scoresShape = detectionScores.shape;
+            scores4D = new float[scoresShape.batch, scoresShape.height, scoresShape.width, scoresShape.channels];
+            //Take the scoresArray, which contains the detection scores as a one-dimensional array, and copy it into a
+            //four-dimensional array (scores4D) for easier indexing and manipulation of the data.
+            Buffer.BlockCopy(scoresArray, 0, scores4D, 0, scoresArray.Length * sizeof(float));
+            scores4DList.Add(scores4D);
+
+            boxesArray = detectionBoxes.ToReadOnlyArray();
+            boxesShape = detectionBoxes.shape;
+            // Convert 1D array to 4D array
+            boxes4D = new float[boxesShape.batch, boxesShape.height, boxesShape.width, boxesShape.channels];
+            Buffer.BlockCopy(boxesArray, 0, boxes4D, 0, boxesArray.Length * sizeof(float));
+            boxes4DList.Add(boxes4D);
+
+            #region QuickSort ONNX Output Arrays For Optimization
+
+            //var testArray = FindTopElements(scores4D, 20);
+            /*
+            for (int i = 0; i < testArray.GetLength(3); i++)
+            {
+                for (int j = 0; j < testArray.GetLength(2); j++)
+                {
+                    Debug.Log("Class " + j + " TOP " + testArray.GetLength(3) + ": " + testArray[0, 0, j, i].ToString("F10"));
+                }
+
+            }
+            */
+            #endregion
+
+
+            //dispose tensors to avoid GPU resource leak
+            detectionBoxes.Dispose();
+            detectionScores.Dispose();
+        }
+
+
+        //Dispose tensors to avoid GPU resource leak (NOTE: the dispose works here but not at the end of the method. This is probably because if i delay the disposing
+        //by allowing to execute all the loops etc first, the next frame is executing while the code from this frame is executed and thus it disposes the tensors from
+        //the next frame before they get the chance to execute. This is just my guess, not sure.)
+        //Debug.Log("Before: " + inputs["input"].ToString());
+        tensor.Dispose();
+        //Debug.Log("After: " + inputs["input"].ToString());
+        inputs["input"].Dispose();
+        // Debug.Log("Before inputs: " + inputs.Count);
+        inputs.Clear();
+        // Debug.Log("After inputs: " + inputs.Count);
+        //worker.Dispose();
+#else
         // Pass the Tensor as input to the ONNX model
         worker.Execute(inputs);
 
@@ -415,7 +500,8 @@ public class ObjectDetection : MonoBehaviour
         // Debug.Log("After inputs: " + inputs.Count);
         //worker.Dispose();
 
-        #region Output Handling For Detection And Drawing Of Bounding Boxes etc
+        
+
         // convert the tensor outputs to arrays
         //The ToReadOnlyArray() method is used to convert the Tensor object to a read-only array. This is because the Tensor object is mutable, which means that it can be changed after it is created. However, in some cases, it may be desirable to use an immutable data structure like a read-only array to prevent accidental modification of the data.
         //Regarding the conversion to a 4D array, it is possible that the boxesTensor has a different shape than what is expected by the rest of the code.By converting the tensor to a read - only array and then to a 4D array with the expected shape, we ensure that the data is in the correct format for the rest of the code to work properly.
@@ -451,7 +537,10 @@ public class ObjectDetection : MonoBehaviour
         //dispose tensors to avoid GPU resource leak
         detectionBoxes.Dispose();
         detectionScores.Dispose();
+#endif
 
+
+        #region Output Handling For Detection And Drawing Of Bounding Boxes etc
 
         // create a list to store the detected objects based on the DetectedObject object class i created
         detectedObjects = new List<DetectedObject>();//this list is for later in case i want to recognize multiple objects at once
@@ -470,7 +559,11 @@ public class ObjectDetection : MonoBehaviour
             float[] classProbabilities = new float[numClasses];
             for (int k = 0; k < numClasses; k++)
             {
+#if MULTI_MODEL
+                float classProbability = scores4DList[k][0, 0, 0, i];
+#else
                 float classProbability = scores4D[0, 0, k, i];
+#endif
                 classProbabilities[k] = classProbability;
             }
 
@@ -518,10 +611,14 @@ public class ObjectDetection : MonoBehaviour
             // add the detected object to the list
             if (maxProbability > DETECTION_THRESHOLD)
             {
+#if MULTI_MODEL
+                boxes4D = boxes4DList[maxIndex];
+#endif
+
                 //NOTE: check y axis because i thought it was top to bottom but now i see it is the opposite. Make sure which one is correct
                 // get the bounding box coordinates from the tensor (x is the horizontal pixels left to right and y the vertical bottom to top)
                 //x1,y1 are the coordinates of bottom-left corner and x2,y2 are the coordinates of top-right corner of the bounding box                
-                
+
                 float x1 = Mathf.Clamp01(boxes4D[0, 0, 0, i]);
                 float y1 = Mathf.Clamp01(boxes4D[0, 0, 1, i]);
                 float x2 = Mathf.Clamp01(boxes4D[0, 0, 2, i]);

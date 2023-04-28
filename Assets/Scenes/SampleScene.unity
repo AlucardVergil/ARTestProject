@@ -471,11 +471,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arCameraManager: {fileID: 22732922}
   preprocess: {fileID: 22732926}
-  modelFile: {fileID: 5022602860645237092, guid: 8091b318d6dbdc24d93e9b482717cad0,
-    type: 3}
+  modelFile:
+  - {fileID: 5022602860645237092, guid: fef3539b340d4324fa8bd5c403b993ba, type: 3}
+  - {fileID: 5022602860645237092, guid: 8f41bec0b6648894986727cc6db77cb4, type: 3}
+  - {fileID: 5022602860645237092, guid: be5d90f0bd608144785be4a363de29e3, type: 3}
   numClasses: 3
   loadingBar: {fileID: 1955572897}
-  loadingTime: 0.3
+  loadingTime: 0.1
   lastDetectionTimeDifference: 2
   displayDurationAfterOutOfView: 5
   numFramesToSwitchInfoPanel: 20
@@ -1081,7 +1083,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_VideoClip
       value: 
-      objectReference: {fileID: 32900000, guid: dbc85b49b26e3324e925e53ccc47a8b7,
+      objectReference: {fileID: 32900000, guid: 3de60abc8de2311459ad6d56ffab758a,
         type: 3}
     - target: {fileID: 4701725092522344265, guid: 9cf944a04c6201b4e8ca50dacf9475e5,
         type: 3}
