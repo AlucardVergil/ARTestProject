@@ -15,8 +15,8 @@ public class QuitHandler : MonoBehaviour
     private void OnApplicationQuit()
     {
         objDetectionScript.tensor.Dispose();
-        //objDetectionScript.detectionBoxes.Dispose();
-        //objDetectionScript.detectionScores.Dispose();
+        objDetectionScript.detectionBoxes.Dispose();
+        objDetectionScript.detectionScores.Dispose();
         //Debug.Log("Application quitting");
     }
 
