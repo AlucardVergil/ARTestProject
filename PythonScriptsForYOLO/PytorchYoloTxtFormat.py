@@ -13,7 +13,7 @@ for image_file in image_files:
     txt_path = os.path.join(folder_path, txt_file)
     with open(txt_path, 'r') as f:
         bbox_info = f.readline().strip().split(' ')
-        bbox = ' '.join(bbox_info[1:]) + ' ' + bbox_info[0]
+        bbox = ','.join(bbox_info[1:]) + ',' + bbox_info[0]
         annotations.append(f'{image_path} {bbox}')
 
 # Write the annotations to a text file

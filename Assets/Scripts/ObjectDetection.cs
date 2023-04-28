@@ -22,7 +22,7 @@ public class ObjectDetection : MonoBehaviour
     const string OUTPUT_NAME_2 = "confs";
 
 #if UNITY_EDITOR
-    const float DETECTION_THRESHOLD = 0.8f;
+    const float DETECTION_THRESHOLD = 0.9f;
 #else
     const float DETECTION_THRESHOLD = 8f;
 #endif
@@ -33,7 +33,7 @@ public class ObjectDetection : MonoBehaviour
     public NNModel modelFile;
     
     [Header("The number of object classes of my ONNX model")]
-    public int numClasses = 2;// the number of object classes of my ONNX model. You can see it from the 3rd value of the confs tensor       
+    public int numClasses = 2;// the number of object classes of my ONNX model. You can see it from the 3rd value of the confs tensor.     
     private Model model;
     private IWorker worker;
 
@@ -46,12 +46,22 @@ public class ObjectDetection : MonoBehaviour
     [Header("How much time should pass after detected object goes \nout of view before the info panel disappears")]
     [SerializeField] private float displayDurationAfterOutOfView = 2f;
     private float lastDetectionTime = 0;
-    private bool detectionLocked = false; //bool to check if object was detected for given loading time
-    private int previousClassIndex = 0;
+    private bool detectionLocked = false; //bool to check if object was detected for given loading time    
     private int camScreenWidth = 853; //this default value is not the correct one. It's just because i wanted to intantiate it with something
     private int camScreenHeight = 480;
     private float screenWidth = Screen.width;
     private float screenHeight = Screen.height;
+
+    [Space][Space]
+    [Header("When it detects a different object, in some frames, \nthan the one for which the detection was locked, for how \nmany frames does it need to detect " +
+        "the new object \nbefore it breaks the detection lock.")]
+    [Tooltip("For example if it locked on turbine and at some point it detects pliers for 20 frames in a row " +
+        "then it will make detectionLocked false. This is to prevent it from changing the detected object if it detects for example for 60 frames turbine and " +
+        "then for some reason it detects pliers for 5 frames. Realistically the detection shouldn't change so suddenly from one frame to the next so this makes " +
+        "sure that it did detect a new object for some frames before switching.")]
+    public int numFramesToSwitchInfoPanel = 20;
+    private int previousClassIndex = 0;
+    private int changedClassCounter = 0;
 
     [Space][Space]
     [Header("Canvas UI")]
@@ -597,11 +607,15 @@ public class ObjectDetection : MonoBehaviour
         //start loading to lock onto a detected object        
         if (detectedObjects.Count != 0)
         {
-            previousClassIndex = detectedObjects[closestObjIndex].classIndex; //save class to check if the class changed in the next frame
+            //previousClassIndex = detectedObjects[closestObjIndex].classIndex; //save class to check if the class changed in the next frame
             //save the time that the last object detection frame occured, to use for loading bar
             lastDetectionTime = Time.time;
             if (detectionLocked == false) //if detected object hasn't locked yet, then start the loading bar
+            {
                 LoadingDetectedObjectUI();
+                previousClassIndex = detectedObjects[closestObjIndex].classIndex; //save detected object of current frame to check if it changed while detectionLocked was true.
+                changedClassCounter = 0; //make this variable zero when detectionLocked is false. This is used to check how many frames has past since the current detection object changed from the previous detected one.
+            }                
             else
             {
                 if (!drawBoxBool)
@@ -617,13 +631,34 @@ public class ObjectDetection : MonoBehaviour
                 //*/
                 #endregion
 
-                for (int h = 0; h < numClasses; h++)
+                //if current detection is different from the last detection when the bar loaded
+                if (previousClassIndex == detectedObjects[closestObjIndex].classIndex)
                 {
-                    if (h != detectedObjects[closestObjIndex].classIndex)
-                        uiPanelPrefab[h].SetActive(false);
-                    else
-                        uiPanelPrefab[detectedObjects[closestObjIndex].classIndex].SetActive(true);
+                    for (int h = 0; h < numClasses; h++)
+                    {
+                        if (h != detectedObjects[closestObjIndex].classIndex)
+                            uiPanelPrefab[h].SetActive(false);
+                        else
+                            uiPanelPrefab[detectedObjects[closestObjIndex].classIndex].SetActive(true);
+                    }
+                    changedClassCounter = 0;
                 }
+                else
+                {
+                    changedClassCounter++;
+                    //if the detected object from the last 20 frames (for example) is different from the previous detected object then make detectionLocked
+                    //false so that the bar loads again.
+                    if (changedClassCounter > numFramesToSwitchInfoPanel) 
+                    {
+                        for (int h = 0; h < numClasses; h++)
+                        {
+                            uiPanelPrefab[h].SetActive(false);
+                        }
+                        detectionLocked = false;
+                    }                        
+                }
+
+                
             }
         }
         else
