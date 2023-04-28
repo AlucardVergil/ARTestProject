@@ -419,6 +419,7 @@ public class ObjectDetection : MonoBehaviour
 
 #if MULTI_MODEL
         List<float[,,,]> boxes4DList = new List<float[,,,]>();
+        List<float[,,,]> scores4DList = new List<float[,,,]>();
 
         for (int i = 0; i < modelFile.Length; i++)
         {
@@ -442,7 +443,8 @@ public class ObjectDetection : MonoBehaviour
             scores4D = new float[scoresShape.batch, scoresShape.height, numClasses, scoresShape.channels];
             //Take the scoresArray, which contains the detection scores as a one-dimensional array, and copy it into a
             //four-dimensional array (scores4D) for easier indexing and manipulation of the data.
-            Buffer.BlockCopy(scoresArray, 0, scores4D, i * scoresArray.Length * sizeof(float), scoresArray.Length * sizeof(float));
+            Buffer.BlockCopy(scoresArray, 0, scores4D, 0, scoresArray.Length * sizeof(float));
+            scores4DList.Add(scores4D);
 
             boxesArray = detectionBoxes.ToReadOnlyArray();
             boxesShape = detectionBoxes.shape;
@@ -562,7 +564,11 @@ public class ObjectDetection : MonoBehaviour
             float[] classProbabilities = new float[numClasses];
             for (int k = 0; k < numClasses; k++)
             {
+#if MULTI_MODEL
+                float classProbability = scores4DList[k][0, 0, 0, i];
+#else
                 float classProbability = scores4D[0, 0, k, i];
+#endif
                 classProbabilities[k] = classProbability;
             }
 
