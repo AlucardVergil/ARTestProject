@@ -440,7 +440,7 @@ public class ObjectDetection : MonoBehaviour
             //Regarding the conversion to a 4D array, it is possible that the boxesTensor has a different shape than what is expected by the rest of the code.By converting the tensor to a read - only array and then to a 4D array with the expected shape, we ensure that the data is in the correct format for the rest of the code to work properly.
             scoresArray = detectionScores.ToReadOnlyArray();
             scoresShape = detectionScores.shape;
-            scores4D = new float[scoresShape.batch, scoresShape.height, numClasses, scoresShape.channels];
+            scores4D = new float[scoresShape.batch, scoresShape.height, scoresShape.width, scoresShape.channels];
             //Take the scoresArray, which contains the detection scores as a one-dimensional array, and copy it into a
             //four-dimensional array (scores4D) for easier indexing and manipulation of the data.
             Buffer.BlockCopy(scoresArray, 0, scores4D, 0, scoresArray.Length * sizeof(float));
