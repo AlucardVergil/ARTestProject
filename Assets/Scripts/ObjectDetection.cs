@@ -71,6 +71,9 @@ public class ObjectDetection : MonoBehaviour
     private int previousClassIndex = 0;
     private int changedClassCounter = 0;
 
+    private int[] predominantDetectedObjCounter;
+    private int predominantObjClass = 0;
+
     [Space][Space]
     [Header("Canvas UI")]
     public TMP_Text textMeshPro;
@@ -239,6 +242,8 @@ public class ObjectDetection : MonoBehaviour
 
         Rect testRect = new Rect(x1Abs, y1Abs, x2Abs - x1Abs, y2Abs - y1Abs);
         //DrawBoxes(testRect, 0, 1);
+
+        predominantDetectedObjCounter = new int[numClasses];
     }
 
     #region Video For Testing Only (To Remove Later)
@@ -711,12 +716,12 @@ public class ObjectDetection : MonoBehaviour
             {
                 LoadingDetectedObjectUI();
                 previousClassIndex = detectedObjects[closestObjIndex].classIndex; //save detected object of current frame to check if it changed while detectionLocked was true.
-                changedClassCounter = 0; //make this variable zero when detectionLocked is false. This is used to check how many frames has past since the current detection object changed from the previous detected one.
+                changedClassCounter = 0; //make this variable zero when detectionLocked is false. This is used to check how many frames has past since the current detection object changed from the previous detected one.                                
             }                
             else
             {
                 if (!drawBoxBool)
-                {                    
+                {
                     //drawBoxBool = true;
                 }
                 DrawBoxes(detectedObjects[closestObjIndex].boundingBox, detectedObjects[closestObjIndex].classIndex, detectedObjects[closestObjIndex].probability);
@@ -729,14 +734,14 @@ public class ObjectDetection : MonoBehaviour
                 #endregion
 
                 //if current detection is different from the last detection when the bar loaded
-                if (previousClassIndex == detectedObjects[closestObjIndex].classIndex)
+                if (previousClassIndex == predominantObjClass)
                 {
                     for (int h = 0; h < numClasses; h++)
                     {
-                        if (h != detectedObjects[closestObjIndex].classIndex)
+                        if (h != predominantObjClass)
                             uiPanelPrefab[h].SetActive(false);
                         else
-                            uiPanelPrefab[detectedObjects[closestObjIndex].classIndex].SetActive(true);
+                            uiPanelPrefab[predominantObjClass].SetActive(true);
                     }
                     changedClassCounter = 0;
                 }
@@ -752,10 +757,9 @@ public class ObjectDetection : MonoBehaviour
                             uiPanelPrefab[h].SetActive(false);
                         }
                         detectionLocked = false;
+                        predominantDetectedObjCounter = new int[numClasses]; //reset the counter of the classes for loading
                     }                        
-                }
-
-                
+                }                
             }
         }
         else
@@ -773,6 +777,7 @@ public class ObjectDetection : MonoBehaviour
                     uiPanelPrefab[h].SetActive(false);
                 }
                 detectionLocked = false;
+                predominantDetectedObjCounter = new int[numClasses]; //reset the counter of the classes for loading
             }
         }
 
@@ -931,12 +936,19 @@ public class ObjectDetection : MonoBehaviour
         temp = Mathf.Clamp(temp, 0f, loadingBar.maxValue);
         loadingBar.value = temp;
 
+        //Increment the counter of the class occurrences during loading so that i find in the end of the loading which class was predominantly detected
+        predominantDetectedObjCounter[previousClassIndex]++;
+
         //do something when loading is finished
         if (loadingBar.value == loadingBar.maxValue)
         {
             loadingBar.value = 0;
             loadingBar.gameObject.SetActive(false);
-            detectionLocked = true;            
+            detectionLocked = true;
+
+            //Get class index of the predominant detected obj from the array. It gets the class that had the largest number of occurrences during loading bar
+            predominantObjClass = predominantDetectedObjCounter.ToList().IndexOf(predominantDetectedObjCounter.Max());
+            predominantDetectedObjCounter = new int[numClasses]; //reset the counter of the classes for loading
         }
     }
 
